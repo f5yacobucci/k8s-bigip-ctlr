@@ -45,6 +45,13 @@ console.setFormatter(
 root_logger = logging.getLogger()
 root_logger.addHandler(console)
 
+class LogWrapper:
+    def __init__(self, log):
+        self._log = log
+        pass
+
+    def write(self, message):
+        self._log.info(message)
 
 class ResponseStatusFilter(logging.Filter):
     def filter(self, record):
@@ -399,14 +406,16 @@ class ConfigHandler():
                 # and before deleting profiles
                 if mgr.get_schema_type() == 'net':
                     import objgraph
-                    objgraph.show_growth(limit=10)
+                    wrapper = LogWrapper(log)
+                    objgraph.show_growth(limit=10, file=wrapper)
                     incomplete += mgr._apply_net_config(cfg_net)
-                    objgraph.show_growth(limit=10)
+                    objgraph.show_growth(limit=10, file=wrapper)
                 else:
                     import objgraph
-                    objgraph.show_growth(limit=10)
+                    wrapper = LogWrapper(log)
+                    objgraph.show_growth(limit=10, file=wrapper)
                     incomplete += mgr._apply_ltm_config(cfg_ltm)
-                    objgraph.show_growth(limit=10)
+                    objgraph.show_growth(limit=10, file=wrapper)
 
                 # Manually delete custom profiles (if needed)
                 if customProfiles and \
