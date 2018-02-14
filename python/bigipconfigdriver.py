@@ -407,15 +407,21 @@ class ConfigHandler():
                 if mgr.get_schema_type() == 'net':
                     import objgraph
                     wrapper = LogWrapper(log)
+                    log.info("BEFORE APPLY NET")
                     objgraph.show_growth(limit=10, file=wrapper)
                     incomplete += mgr._apply_net_config(cfg_net)
+                    log.info("AFTER APPLY NET")
                     objgraph.show_growth(limit=10, file=wrapper)
+                    log.info("END NET")
                 else:
                     import objgraph
                     wrapper = LogWrapper(log)
+                    log.info("BEFORE APPLY LTM")
                     objgraph.show_growth(limit=10, file=wrapper)
                     incomplete += mgr._apply_ltm_config(cfg_ltm)
+                    log.info("AFTER APPLY LTM")
                     objgraph.show_growth(limit=10, file=wrapper)
+                    log.info("END LTM")
 
                 # Manually delete custom profiles (if needed)
                 if customProfiles and \
