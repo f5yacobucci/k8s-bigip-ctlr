@@ -398,9 +398,15 @@ class ConfigHandler():
                 # Apply the BIG-IP config after creating profiles
                 # and before deleting profiles
                 if mgr.get_schema_type() == 'net':
+                    import objgraph
+                    objgraph.show_growth(limit=10)
                     incomplete += mgr._apply_net_config(cfg_net)
+                    objgraph.show_growth(limit=10)
                 else:
+                    import objgraph
+                    objgraph.show_growth(limit=10)
                     incomplete += mgr._apply_ltm_config(cfg_ltm)
+                    objgraph.show_growth(limit=10)
 
                 # Manually delete custom profiles (if needed)
                 if customProfiles and \
